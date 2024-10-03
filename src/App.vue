@@ -1,111 +1,16 @@
 <template>
-<header>
-    <div class="container">
-        <div class="logo">
-            <i class="bi bi-card-checklist"></i>
-            <span>Listou</span>
-        </div>
-    </div>
-</header>
-
-<section class="form">
-    <div class="container">
-        <div class="d-flex align-items-center justify-content-center gap-2">
-            <label for="file" class="file-upload-btn">
-                <i class="bi bi-cloud-upload"></i>
-            </label>
-            <input type="file" id="file" @change="handleFileUpload" />
-            <div class="input-group mb-3">
-                <input v-model="newItem" type="text" class="form-control" placeholder="Novo item" />
-                <select v-model="newCategory" class="form-select">
-                    <option disabled value="">Escolha uma categoria</option>
-                    <option value="Alimentos">Alimentos</option>
-                    <option value="Frios">Frios</option>
-                    <option value="Carnes">Carnes</option>
-                    <option value="Limpeza">Limpeza</option>
-                    <option value="Bebidas">Bebidas</option>
-                    <option value="Hortifruti">Hortifruti</option>
-                    <option value="Padaria">Padaria</option>
-                    <option value="Laticínios">Laticínios</option>
-                    <option value="Doces">Doces</option>
-                    <option value="Cereais">Cereais</option>
-                    <option value="Higiene Pessoal">Higiene Pessoal</option>
-                    <option value="Congelados">Congelados</option>
-                    <option value="Pet Shop">Pet Shop</option>
-                </select>
-                <button class="btn btn-primary2" @click="addItem">Adicionar</button>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Mensagem de erro -->
-<div class="container error" v-if="errorMessage">
-    <div class="alert alert-danger">
-        {{ errorMessage }}
-    </div>
-</div>
-
-<!-- Exibir os itens por categorias -->
-<section class="container mb-8 items-wrapper" v-if="!hide">
-    <div v-for="(categoryItems, category) in groupedItems" :key="category" class="items">
-        <h3>{{ category }}</h3>
-        <ul class="list-group mb-3">
-            <li v-for="item in categoryItems" :key="item.name" class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <input type="checkbox" id="check" v-model="item.completed" />
-                    <span :class="{ 'text-decoration-line-through': item.completed }" id="item-name">
-                        {{ item.name }}
-                    </span>
-                </div>
-                <div v-if="item.completed">
-                    <input v-model.number="item.price" type="number" placeholder="Preço" class="form-control" />
-                </div>
-                <button class="btn btn-danger" @click="removeItem(item.name)">
-                    Remover
-                </button>
-            </li>
-        </ul>
-    </div>
-</section>
-<section v-if="!items.length" class="container">
-    <p class="text-center my-4">Lista Vazia</p>
-</section>
-
-<section class="total" v-if="hide">
-    <div class="container">
-        <button class="back" @click="back">
-            <i class="bi bi-arrow-left"></i>
-        </button>
-        <div class="d-flex justify-content-between">
-            <div class="totalItems">
-                <h4>Itens:</h4>
-                <h1>{{ (( checkout.totalItens < 10 )?'0'+checkout.totalItens : checkout.totalItens) }}</h1>
-            </div>
-            <div class="totalPrice">
-                <h4>Total:</h4>
-                <h1>R$ {{ checkout.totalValor ? checkout.totalValor.toFixed(2) : '0.00' }}</h1>
-            </div>
-        </div>
-        <p class="alert alert-info" role="alert">
-            Você selecionou {{ checkout.totalItens }} {{ (checkout.totalItens > 1 ? 'itens' : 'item') }} com um valor total de R$ {{ checkout.totalValor ? checkout.totalValor.toFixed(2) : '0.00' }}.
-        </p>
-    </div>
-</section>
-
-<hr class="my-3">
-
-<footer>
-    <button id="checkout" @click="CheckOut">
-        <i class="bi bi-check-lg"></i>
-    </button>
-</footer>
+    <MainHeader />
+    <router-view />
 </template>
 
 <script>
+import MainHeader from './components/MainHeader.vue'
 import * as XLSX from "xlsx";
 
 export default {
+    components: {
+        MainHeader,
+    },
     data() {
         return {
             newItem: "",
@@ -252,33 +157,6 @@ export default {
 </script>
 
 <style lang="css" scoped>
-header {
-    width: 100%;
-    max-width: 500px;
-    background-color: #F8772F;
-    background-image: url('@/assets/header-background.png');
-    background-position-x: right;
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding: 45px 0;
-    display: table;
-    margin: 0 auto;
-}
-
-.logo {
-    font-size: 35px;
-    font-weight: 600;
-    color: #FFF;
-    font-family: 'Neo Sans Std', sans-serif;
-    display: flex;
-    gap: 7px;
-    align-items: center;
-}
-
-.logo i {
-    font-size: 30px;
-}
-
 section.form {
     margin: 30px auto;
     display: table;

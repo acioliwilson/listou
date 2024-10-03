@@ -364,14 +364,14 @@ footer {
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
-    height: 60px;
+    height: 100px;
     display: flex;
     justify-content: center;
     background: #f75437;
     position: fixed;
     bottom: 0;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(30px);
     box-shadow: 0 -5px 30px rgba(0, 0, 0, .1);
 }
 
